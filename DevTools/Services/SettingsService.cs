@@ -19,7 +19,7 @@ namespace DevTools.Services
                 var json = File.ReadAllText(FilePath);
                 return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new AppSettings();
             }
