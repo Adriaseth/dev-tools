@@ -1,22 +1,30 @@
-﻿using DevTools.Models;
+﻿using DevTools.Interfaces;
+using DevTools.Models;
 using System.IO;
 using System.Text.Json;
 
 namespace DevTools.Services
 {
-    public static class SettingsService
+    public class SettingsService : ISettingsService
     {
-        private static readonly string Folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DevTools");
-        private static readonly string FilePath = Path.Combine(Folder, "settings.json");
+        private readonly string _folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DevTools");
+        private readonly string _filePath;
+        public AppSettings Settings { get; private set; }
 
-        public static AppSettings Load()
+        public SettingsService()
+        {
+            _filePath = Path.Combine(_folder, "settings.json");
+            Settings = Load();
+        }
+
+        private AppSettings Load()
         {
             try
             {
-                if (!File.Exists(FilePath))
+                if (!File.Exists(_filePath))
                     return new AppSettings();
 
-                var json = File.ReadAllText(FilePath);
+                var json = File.ReadAllText(_filePath);
                 return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
             }
             catch (Exception)
@@ -25,16 +33,16 @@ namespace DevTools.Services
             }
         }
 
-        public static void Save(AppSettings settings)
+        public void Save()
         {
-            Directory.CreateDirectory(Folder);
+            Directory.CreateDirectory(_folder);
 
-            var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions
+            var json = JsonSerializer.Serialize(Settings, new JsonSerializerOptions
             {
                 WriteIndented = true
             });
 
-            File.WriteAllText(FilePath, json);
+            File.WriteAllText(_filePath, json);
         }
     }
 }

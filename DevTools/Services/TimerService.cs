@@ -1,4 +1,5 @@
 ﻿using DevTools.Enums;
+using DevTools.Interfaces;
 using DevTools.Models;
 using System.Windows.Threading;
 
@@ -6,20 +7,21 @@ namespace DevTools.Services
 {
     public class TimerService
     {
+        private readonly ISettingsService _settingsService;
         public event Action? Tick;
         public TimeSpan Remaining { get; private set; }
         public TimeSpan StandTimer { get; private set; }
         public TimeSpan SitTimer { get; private set; }
         private readonly DispatcherTimer _timer;
         private TimerModel _currentModel = TimerModel.Stand;
-        private readonly AppSettings _settings;
+        private AppSettings Settings => _settingsService.Settings;
 
-        public TimerService()
+        public TimerService(ISettingsService settingsService)
         {
-            _settings = SettingsService.Load();
+            _settingsService = settingsService;
 
-            StandTimer = TimeSpan.FromMinutes(_settings.StandMinutes);
-            SitTimer = TimeSpan.FromMinutes(_settings.SitMinutes);
+            StandTimer = TimeSpan.FromMinutes(Settings.StandMinutes);
+            SitTimer = TimeSpan.FromMinutes(Settings.SitMinutes);
 
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += (s, e) => OnTick();
@@ -64,25 +66,25 @@ namespace DevTools.Services
             {
                 case TimerAction.Add when model == TimerModel.Stand:
                     StandTimer = StandTimer.Add(TimeSpan.FromMinutes(amountOfMinutes));
-                    _settings.StandMinutes = StandTimer.TotalMinutes;
+                    Settings.StandMinutes = StandTimer.TotalMinutes;
                     break;
                 case TimerAction.Subtract when model == TimerModel.Stand:
                     StandTimer = StandTimer.Subtract(TimeSpan.FromMinutes(amountOfMinutes));
-                    _settings.StandMinutes = StandTimer.TotalMinutes;
+                    Settings.StandMinutes = StandTimer.TotalMinutes;
                     break;
                 case TimerAction.Add when model == TimerModel.Sit:
                     SitTimer = SitTimer.Add(TimeSpan.FromMinutes(amountOfMinutes));
-                    _settings.SitMinutes = SitTimer.TotalMinutes;
+                    Settings.SitMinutes = SitTimer.TotalMinutes;
                     break;
                 case TimerAction.Subtract when model == TimerModel.Sit:
                     SitTimer = SitTimer.Subtract(TimeSpan.FromMinutes(amountOfMinutes));
-                    _settings.SitMinutes = SitTimer.TotalMinutes;
+                    Settings.SitMinutes = SitTimer.TotalMinutes;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
 
-            SettingsService.Save(_settings);
+            _settingsService.Save();
         }
     }
 }
