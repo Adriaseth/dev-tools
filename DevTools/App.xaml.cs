@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DevTools.Interfaces;
 using DevTools.Models;
 using DevTools.Services;
 using DevTools.ViewModels;
@@ -21,6 +22,7 @@ namespace DevTools
                 .ConfigureServices((context, services) =>
                 {
                     //App-wide services
+                    services.AddSingleton<ISettingsService, SettingsService>();
                     services.AddSingleton<TimerService>();
 
                     //View models

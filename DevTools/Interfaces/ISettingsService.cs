@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DevTools.Models;
+﻿using DevTools.Models;
 
 namespace DevTools.Interfaces
 {
