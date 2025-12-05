@@ -89,6 +89,16 @@ namespace DevTools.Services
                     throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
 
+            if (CurrentModel == TimerModel.Stand)
+            {
+                Remaining = StandTimer;
+
+            }
+            else if (CurrentModel == TimerModel.Sit)
+            {
+                Remaining = SitTimer;
+            }
+
             _settingsService.Save();
         }
     }
