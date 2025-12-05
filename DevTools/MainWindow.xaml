@@ -3,23 +3,108 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DevTools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="DevTools" Height="600" Width="950"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E">
+
+	<Window.Resources>
+
+		<!-- BRUSHES -->
+		<SolidColorBrush x:Key="PrimaryBrush" Color="#4CAF50"/>
+		<SolidColorBrush x:Key="PrimaryHoverBrush" Color="#383838"/>
+		<SolidColorBrush x:Key="MenuBackgroundBrush" Color="#2B2B2B"/>
+
+		<!-- MENU ITEM STYLE -->
+		<Style TargetType="ListBoxItem">
+			<!-- Bigger padding (height) -->
+			<Setter Property="Padding" Value="22 18" />
+
+			<!-- Remove spacing between items -->
+			<Setter Property="Margin" Value="0" />
+
+			<!-- Make content stretch full width -->
+			<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+
+			<Setter Property="Foreground" Value="#DDD" />
+			<Setter Property="FontSize" Value="20" />
+			<!-- slightly bigger -->
+			<Setter Property="Cursor" Value="Hand" />
+			<Setter Property="Background" Value="Transparent" />
+
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ListBoxItem">
+						<Border x:Name="Container"
+						        Background="{TemplateBinding Background}"
+						        CornerRadius="0"
+						        Padding="{TemplateBinding Padding}">
+							<ContentPresenter VerticalAlignment="Center" />
+						</Border>
+
+						<ControlTemplate.Triggers>
+
+							<!-- Hover -->
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="Container"
+								        Property="Background"
+								        Value="{StaticResource PrimaryHoverBrush}" />
+							</Trigger>
+
+							<!-- Selected -->
+							<Trigger Property="IsSelected" Value="True">
+								<Setter TargetName="Container"
+								        Property="Background"
+								        Value="{StaticResource PrimaryBrush}" />
+								<Setter Property="Foreground" Value="White" />
+							</Trigger>
+
+						</ControlTemplate.Triggers>
+
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	</Window.Resources>
+
+
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
+			<ColumnDefinition Width="260"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<ListBox x:Name="Menu"
-		         SelectionChanged="Menu_OnSelectionChanged"
-		         Background="#333"
-		         Foreground="White"
-		         FontSize="18">
-			<ListBoxItem Tag="Home">Home</ListBoxItem>
-			<ListBoxItem Tag="Timer">Timer</ListBoxItem>
-			<ListBoxItem Tag="Water">Water</ListBoxItem>
-		</ListBox>
-		<ContentControl x:Name="MainContent" Grid.Column="1"></ContentControl>
+
+		<!-- Sidebar -->
+		<Border Background="{StaticResource MenuBackgroundBrush}" Padding="0 0 0 0">
+			<StackPanel>
+
+				<!-- Logo -->
+				<TextBlock Text="DevTools"
+                           FontSize="32"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           Margin="20 20 20 30"/>
+
+				<!-- Menu -->
+				<ListBox x:Name="Menu"
+                         SelectionChanged="Menu_OnSelectionChanged"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Foreground="White"
+                         HorizontalAlignment="Stretch">
+					<ListBoxItem Tag="Home">🏠  Home</ListBoxItem>
+					<ListBoxItem Tag="Timer">⏱  Timer</ListBoxItem>
+					<ListBoxItem Tag="Water">💧  Water</ListBoxItem>
+				</ListBox>
+
+			</StackPanel>
+		</Border>
+
+		<!-- Main Content Area -->
+		<Border Grid.Column="1" Background="#252525" CornerRadius="12" Margin="15">
+			<ContentControl x:Name="MainContent"/>
+		</Border>
+
 	</Grid>
 </Window>
