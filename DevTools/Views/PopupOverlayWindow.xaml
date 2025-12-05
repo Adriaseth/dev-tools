@@ -1,0 +1,48 @@
+<local:OverlayBaseWindow
+    x:Class="DevTools.Views.PopupOverlayWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:DevTools.Views"
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="Transparent"
+    Topmost="True"
+    ShowInTaskbar="False"
+    ResizeMode="NoResize"
+    Opacity="0">
+	<!-- Start invisible for fade-in -->
+
+	<local:OverlayBaseWindow.Triggers>
+		<EventTrigger RoutedEvent="Window.Loaded">
+			<BeginStoryboard>
+				<Storyboard>
+					<!-- Fade in window -->
+					<DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1"
+                                     Duration="0:0:0.5"
+                                     AccelerationRatio="0.2"
+                                     DecelerationRatio="0.2"/>
+
+					<!-- Optional: Fade in text separately -->
+					<DoubleAnimation Storyboard.TargetName="Message"
+                                     Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1"
+                                     Duration="0:0:0.5"
+                                     AccelerationRatio="0.2"
+                                     DecelerationRatio="0.2"/>
+				</Storyboard>
+			</BeginStoryboard>
+		</EventTrigger>
+	</local:OverlayBaseWindow.Triggers>
+
+	<Grid>
+		<TextBlock x:Name="Message"
+                   Opacity="0"
+		FontSize="60"
+		Foreground="White"
+		FontWeight="Bold"
+		HorizontalAlignment="Center"
+		VerticalAlignment="Center"
+		TextWrapping="Wrap"/>
+	</Grid>
+</local:OverlayBaseWindow>
