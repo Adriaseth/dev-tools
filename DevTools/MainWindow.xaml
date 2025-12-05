@@ -96,6 +96,7 @@
 					<ListBoxItem Tag="Home">🏠  Home</ListBoxItem>
 					<ListBoxItem Tag="Timer">⏱  Timer</ListBoxItem>
 					<ListBoxItem Tag="Water">💧  Water</ListBoxItem>
+					<Label Content="Beautifiers"></Label>
 				</ListBox>
 
 			</StackPanel>
