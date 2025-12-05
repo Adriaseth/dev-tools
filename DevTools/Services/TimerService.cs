@@ -9,11 +9,13 @@ namespace DevTools.Services
     {
         private readonly ISettingsService _settingsService;
         public event Action? Tick;
+        public event Action? TimerEnd;
         public TimeSpan Remaining { get; private set; }
         public TimeSpan StandTimer { get; private set; }
         public TimeSpan SitTimer { get; private set; }
         private readonly DispatcherTimer _timer;
-        private TimerModel _currentModel = TimerModel.Stand;
+        public TimerModel CurrentModel { get; private set; }
+
         private AppSettings Settings => _settingsService.Settings;
 
         public TimerService(ISettingsService settingsService)
@@ -22,6 +24,8 @@ namespace DevTools.Services
 
             StandTimer = TimeSpan.FromMinutes(Settings.StandMinutes);
             SitTimer = TimeSpan.FromMinutes(Settings.SitMinutes);
+            CurrentModel = TimerModel.Stand;
+            Remaining = StandTimer;
 
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += (s, e) => OnTick();
@@ -45,13 +49,14 @@ namespace DevTools.Services
             }
             else
             {
+                TimerEnd?.Invoke();
                 _timer.Stop();
-                Remaining = _currentModel == TimerModel.Stand ? StandTimer : SitTimer;
-                _currentModel = _currentModel switch
+                Remaining = CurrentModel == TimerModel.Stand ? SitTimer : StandTimer;
+                CurrentModel = CurrentModel switch
                 {
                     TimerModel.Stand => TimerModel.Sit,
                     TimerModel.Sit => TimerModel.Stand,
-                    _ => _currentModel
+                    _ => CurrentModel
                 };
 
                 _timer.Start();
