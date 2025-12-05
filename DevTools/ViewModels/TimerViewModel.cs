@@ -1,20 +1,39 @@
 ﻿using DevTools.Enums;
+using DevTools.Helpers;
 using DevTools.Services;
+using DevTools.Views;
 using System.ComponentModel;
 using System.Windows;
-using DevTools.Helpers;
-using DevTools.Views;
+using System.Windows.Media;
 
 namespace DevTools.ViewModels
 {
     public class TimerViewModel : INotifyPropertyChanged
     {
         private readonly TimerService _timerService;
+        private bool _isRunning;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string StandText => _timerService.StandTimer.ToString();
-        public string SitText => _timerService.SitTimer.ToString();
-        public string RemainingText => _timerService.Remaining.ToString();
+        public string StandText => _timerService.StandTimer.ToString(@"hh\:mm\:ss");
+        public string SitText => _timerService.SitTimer.ToString(@"hh\:mm\:ss");
+        public string RemainingText => _timerService.Remaining.ToString(@"hh\:mm\:ss");
+        public string StartStopText => IsRunning ? "Stop" : "Start";
+        public Brush StartStopColor => new SolidColorBrush(IsRunning ? Colors.Red : Colors.Green);
+        public string SitStandText => _timerService.CurrentModel == TimerModel.Stand ? "Zitten" : "Opstaan";
+
+        public bool IsRunning
+        {
+            get => _isRunning;
+            private set
+            {
+                _isRunning = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunning)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNotRunning)));
+            }
+        }
+
+        public bool IsNotRunning => !IsRunning;
 
         public TimerViewModel(TimerService timerService)
         {
@@ -23,27 +42,46 @@ namespace DevTools.ViewModels
             _timerService.TimerEnd += OnTimerEnd;
         }
 
-        public void StartTimer()
+        public void StartStopTimer()
         {
-            _timerService.StartTimer();
+            if (IsRunning)
+            {
+                _timerService.StopTimer();
+                IsRunning = false;
+            }
+            else
+            {
+                _timerService.StartTimer();
+                IsRunning = true;
+            }
+
+            OnPropertyChanged(nameof(IsRunning));
+            OnPropertyChanged(nameof(IsNotRunning));
+            OnPropertyChanged(nameof(StartStopText));
+            OnPropertyChanged(nameof(StartStopColor));
         }
 
         public void AddOrSubtractFromTimer(TimerAction action, TimerModel model, int amountOfMinutes)
         {
-            _timerService.AddOrSubtractFromTimer(action, model, amountOfMinutes);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StandText)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SitText)));
+            if (!IsRunning)
+            {
+                _timerService.AddOrSubtractFromTimer(action, model, amountOfMinutes);
+                OnPropertyChanged(nameof(StandText));
+                OnPropertyChanged(nameof(SitText));
+                OnPropertyChanged(nameof(RemainingText));
+            }
         }
 
         private void OnTimerTick()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RemainingText)));
+            OnPropertyChanged(nameof(RemainingText));
         }
 
         private void OnTimerEnd()
         {
-            var nextAction = _timerService.CurrentModel == TimerModel.Stand ? "Sit down!" : "Stand up!";
+            var nextAction = SitStandText;
             ShowOverlay(nextAction);
+            IsRunning = false;
         }
 
         private readonly List<Window> _openOverlays = new();
@@ -84,5 +122,7 @@ namespace DevTools.ViewModels
             popup.Show();
             _openOverlays.Add(popup);
         }
+
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

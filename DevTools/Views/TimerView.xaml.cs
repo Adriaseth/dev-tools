@@ -13,9 +13,9 @@ namespace DevTools.Views
             DataContext = vm;
         }
 
-        private void btnStartTimer_Click(object sender, RoutedEventArgs e)
+        private void btnStartStopTimer_Click(object sender, RoutedEventArgs e)
         {
-            ((TimerViewModel)DataContext).StartTimer();
+            ((TimerViewModel)DataContext).StartStopTimer();
         }
 
         private void btnStandAdd_Click(object sender, RoutedEventArgs e)
