@@ -16,8 +16,9 @@ namespace DevTools
     /// </summary>
     public partial class App : Application
     {
-        public static IHost Host { get; private set; }
-        private NotifyIcon _notifyIcon;
+        public static IHost Host { get; private set; } = null!;
+        public static NotifyIcon TrayIcon { get; private set; } = null!;
+
         public bool IsExit { get; private set; }
 
         public App()
@@ -37,9 +38,9 @@ namespace DevTools
                     services.AddSingleton<TimerView>();
                     services.AddSingleton<WaterView>();
                 })
-                .Build();
+                .Build()!;
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             var mutex = new Mutex(true, "DevTools_SingleInstanceApp", out var isNewInstance);
@@ -53,7 +54,7 @@ namespace DevTools
             Host.Start();
             base.OnStartup(e);
 
-            _notifyIcon = new NotifyIcon
+            TrayIcon = new NotifyIcon
             {
                 Icon = new System.Drawing.Icon("Assets/icon.ico"),
                 Visible = true,
@@ -64,22 +65,31 @@ namespace DevTools
             contextMenuStrip.Items.Add("Exit", null, (s, e) =>
             {
                 IsExit = true;
-                _notifyIcon.Visible = false;
+                TrayIcon.Visible = false;
                 Current.Shutdown();
             });
 
-            _notifyIcon.ContextMenuStrip = contextMenuStrip;
+            TrayIcon.ContextMenuStrip = contextMenuStrip;
 
-            _notifyIcon.DoubleClick += (s, args) =>
+            TrayIcon.DoubleClick += (s, args) =>
             {
-                if (Current.MainWindow != null)
-                    Current.MainWindow.Show();
+                var mainWindow = Current.MainWindow;
+                if (mainWindow == null) return;
+
+                if (mainWindow is { WindowState: WindowState.Minimized })
+                    mainWindow.WindowState = WindowState.Normal;
+
+
+                mainWindow.Show();
+                mainWindow.Activate();
+                mainWindow.Topmost = true;
+                mainWindow.Topmost = false;
             };
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            _notifyIcon.Dispose();
+            TrayIcon.Dispose();
             base.OnExit(e);
         }
     }

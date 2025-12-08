@@ -20,7 +20,8 @@ namespace DevTools.ViewModels
         public string RemainingText => _timerService.Remaining.ToString(@"hh\:mm\:ss");
         public string StartStopText => IsRunning ? "Stop" : "Start";
         public Brush StartStopColor => new SolidColorBrush(IsRunning ? Colors.Red : Colors.Green);
-        public string SitStandText => _timerService.CurrentModel == TimerModel.Stand ? "Zitten" : "Opstaan";
+        public string SitStandNextText => _timerService.CurrentModel == TimerModel.Stand ? "Zitten" : "Opstaan";
+        public string SitStandCurrentText => _timerService.CurrentModel == TimerModel.Stand ? "Staan" : "Zitten";
 
         public bool IsRunning
         {
@@ -75,11 +76,16 @@ namespace DevTools.ViewModels
         private void OnTimerTick()
         {
             OnPropertyChanged(nameof(RemainingText));
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                App.TrayIcon.Text = $"{SitStandCurrentText}: {RemainingText}";
+            });
         }
 
         private void OnTimerEnd()
         {
-            var nextAction = SitStandText;
+            var nextAction = SitStandNextText;
             ShowOverlay(nextAction);
             IsRunning = false;
         }
