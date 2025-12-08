@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System.Windows;
 using System.Windows.Forms;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DevTools
 {
@@ -38,9 +39,17 @@ namespace DevTools
                 })
                 .Build();
         }
-
+        
         protected override void OnStartup(StartupEventArgs e)
         {
+            var mutex = new Mutex(true, "DevTools_SingleInstanceApp", out var isNewInstance);
+            if (!isNewInstance)
+            {
+                MessageBox.Show("The application is already running.", "Already running", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Shutdown();
+                return;
+            }
+
             Host.Start();
             base.OnStartup(e);
 
