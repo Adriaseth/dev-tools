@@ -38,5 +38,17 @@ namespace DevTools
 
             }
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            var app = (App)Application.Current;
+            if (!app.IsExit)
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
+
+            base.OnClosing(e);
+        }
     }
 }

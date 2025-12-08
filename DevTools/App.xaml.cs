@@ -1,11 +1,12 @@
-﻿using System.Windows;
-using DevTools.Interfaces;
-using DevTools.Models;
+﻿using DevTools.Interfaces;
 using DevTools.Services;
 using DevTools.ViewModels;
 using DevTools.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Windows;
+using System.Windows.Forms;
+using Application = System.Windows.Application;
 
 namespace DevTools
 {
@@ -15,6 +16,8 @@ namespace DevTools
     public partial class App : Application
     {
         public static IHost Host { get; private set; }
+        private NotifyIcon _notifyIcon;
+        public bool IsExit { get; private set; }
 
         public App()
         {
@@ -40,8 +43,35 @@ namespace DevTools
         {
             Host.Start();
             base.OnStartup(e);
-            //Settings = SettingsService.Load();
-            //TimerService = new TimerService();
+
+            _notifyIcon = new NotifyIcon
+            {
+                Icon = new System.Drawing.Icon("Assets/icon.ico"),
+                Visible = true,
+                Text = "DevTools"
+            };
+
+            var contextMenuStrip = new ContextMenuStrip();
+            contextMenuStrip.Items.Add("Exit", null, (s, e) =>
+            {
+                IsExit = true;
+                _notifyIcon.Visible = false;
+                Current.Shutdown();
+            });
+
+            _notifyIcon.ContextMenuStrip = contextMenuStrip;
+
+            _notifyIcon.DoubleClick += (s, args) =>
+            {
+                if (Current.MainWindow != null)
+                    Current.MainWindow.Show();
+            };
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _notifyIcon.Dispose();
+            base.OnExit(e);
         }
     }
 }
