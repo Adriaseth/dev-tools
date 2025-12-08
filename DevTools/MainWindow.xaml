@@ -1,111 +1,177 @@
 ﻿<Window x:Class="DevTools.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="DevTools" Height="600" Width="950"
-        WindowStartupLocation="CenterScreen"
-        Background="#1E1E1E">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Height="720" Width="1280"
+        WindowStartupLocation="CenterScreen">
+
+	<Window.Effect>
+		<DropShadowEffect BlurRadius="40" ShadowDepth="0" Color="Black" Opacity="0.5"/>
+	</Window.Effect>
 
 	<Window.Resources>
-
-		<!-- BRUSHES -->
-		<SolidColorBrush x:Key="PrimaryBrush" Color="#4CAF50"/>
-		<SolidColorBrush x:Key="PrimaryHoverBrush" Color="#383838"/>
-		<SolidColorBrush x:Key="MenuBackgroundBrush" Color="#2B2B2B"/>
-
-		<!-- MENU ITEM STYLE -->
-		<Style TargetType="ListBoxItem">
-			<!-- Bigger padding (height) -->
-			<Setter Property="Padding" Value="22 18" />
-
-			<!-- Remove spacing between items -->
-			<Setter Property="Margin" Value="0" />
-
-			<!-- Make content stretch full width -->
-			<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-
-			<Setter Property="Foreground" Value="#DDD" />
-			<Setter Property="FontSize" Value="20" />
-			<!-- slightly bigger -->
-			<Setter Property="Cursor" Value="Hand" />
+		<Style x:Key="TitleBarButton" TargetType="Button">
 			<Setter Property="Background" Value="Transparent" />
-
+			<Setter Property="Foreground" Value="White" />
+			<Setter Property="FontSize" Value="18" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Cursor" Value="Hand" />
+			<Setter Property="Width" Value="40" />
+			<Setter Property="Height" Value="40" />
 			<Setter Property="Template">
 				<Setter.Value>
-					<ControlTemplate TargetType="ListBoxItem">
-						<Border x:Name="Container"
-						        Background="{TemplateBinding Background}"
-						        CornerRadius="0"
-						        Padding="{TemplateBinding Padding}">
-							<ContentPresenter VerticalAlignment="Center" />
+					<ControlTemplate TargetType="Button">
+						<Border Background="{TemplateBinding Background}" CornerRadius="0">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
 						</Border>
-
 						<ControlTemplate.Triggers>
-
-							<!-- Hover -->
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="Container"
-								        Property="Background"
-								        Value="{StaticResource PrimaryHoverBrush}" />
+							<Trigger Property="IsMouseOver" Value="true">
+								<Setter Property="Background" Value="#55FFFFFF"></Setter>
+								<Setter Property="Foreground" Value="#FFFFFF" />
 							</Trigger>
-
-							<!-- Selected -->
-							<Trigger Property="IsSelected" Value="True">
-								<Setter TargetName="Container"
-								        Property="Background"
-								        Value="{StaticResource PrimaryBrush}" />
-								<Setter Property="Foreground" Value="White" />
+							<Trigger Property="IsPressed" Value="True">
+								<Setter Property="Background" Value="#77FFFFFF"></Setter>
 							</Trigger>
-
 						</ControlTemplate.Triggers>
-
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style>
 
+		<Style x:Key="SidebarItem" TargetType="Button">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Foreground" Value="#EEEEEE" />
+			<Setter Property="FontSize" Value="18" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Cursor" Value="Hand" />
+			<Setter Property="HorizontalAlignment" Value="Stretch" />
+			<Setter Property="Height" Value="50"></Setter>
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border Background="{TemplateBinding Background}" CornerRadius="0">
+							<ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0" />
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="true">
+								<Setter Property="Background" Value="#55FFFFFF" />
+								<Setter Property="Foreground" Value="#FFFFFF" />
+							</Trigger>
+							<Trigger Property="IsPressed" Value="true">
+								<Setter Property="Background" Value="#77FFFFFF" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 	</Window.Resources>
 
+	<Border CornerRadius="12" Background="#AA1A1A1A">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="260" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
 
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="260"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="50"/>
+				<!-- Title Bar -->
+				<RowDefinition Height="*"/>
+				<!-- Main Content -->
+			</Grid.RowDefinitions>
 
-		<!-- Sidebar -->
-		<Border Background="{StaticResource MenuBackgroundBrush}" Padding="0 0 0 0">
-			<StackPanel>
+			<!-- Background gradient -->
+			<Border Grid.ColumnSpan="2" Grid.RowSpan="2">
+				<Border.Background>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+						<GradientStop Color="#223344FF" Offset="0" />
+						<GradientStop Color="#00332244" Offset="1" />
+					</LinearGradientBrush>
+				</Border.Background>
+			</Border>
 
-				<!-- Logo -->
-				<TextBlock Text="DevTools"
-                           FontSize="32"
-                           Foreground="White"
-                           FontWeight="Bold"
-                           Margin="20 20 20 30"/>
+			<!-- Acrylic blur layer -->
+			<Border Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+				<Border.Effect>
+					<BlurEffect Radius="18"/>
+				</Border.Effect>
+				<Border Background="#55222222" />
+			</Border>
 
-				<!-- Menu -->
-				<ListBox x:Name="Menu"
-                         SelectionChanged="Menu_OnSelectionChanged"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Foreground="White"
-                         HorizontalAlignment="Stretch">
-					<ListBoxItem Tag="Home">🏠  Home</ListBoxItem>
-					<ListBoxItem Tag="Timer">⏱  Timer</ListBoxItem>
-					<ListBoxItem Tag="Water">💧  Water</ListBoxItem>
-					<Label Content="Beautifiers"></Label>
-				</ListBox>
+			<!-- SIDEBAR -->
+			<Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                    Background="Transparent"
+                    CornerRadius="12 0 0 12"
+                    Padding="0">
 
-			</StackPanel>
-		</Border>
+				<StackPanel>
+					<TextBlock Text="DevTools"
+                               FontSize="26"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               Margin="20,20,20,30"/>
 
-		<!-- Main Content Area -->
-		<Border Grid.Column="1" Background="#252525" CornerRadius="12" Margin="15">
-			<ContentControl x:Name="MainContent"/>
-		</Border>
+					<TextBlock Text="MENU"
+                               Foreground="#77FFFFFF"
+                               Margin="20,0,20,12"/>
+					<StackPanel>
+						<Button Style="{StaticResource SidebarItem}" Tag="Home" Click="Menu_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="🏠" FontSize="18" Margin="0 0 10 0" />
+								<TextBlock Text="Home" />
+							</StackPanel>
+						</Button>
 
-	</Grid>
+						<Button Style="{StaticResource SidebarItem}" Tag="Timer" Click="Menu_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="⏱" FontSize="18" Margin="0 0 10 0" />
+								<TextBlock Text="Timer" />
+							</StackPanel>
+						</Button>
+
+						<Button Style="{StaticResource SidebarItem}" Tag="Water" Click="Menu_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="💧" FontSize="18" Margin="0 0 10 0" />
+								<TextBlock Text="Water" />
+							</StackPanel>
+						</Button>
+					</StackPanel>
+				</StackPanel>
+			</Border>
+
+			<!-- TITLE BAR -->
+			<Grid Grid.Column="1" Grid.Row="0" Background="Transparent" MouseDown="DragWindow">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="40" />
+					<ColumnDefinition Width="40" />
+				</Grid.ColumnDefinitions>
+
+				<Button Grid.Column="1"
+						Style="{StaticResource TitleBarButton}"
+                        Click="Min_Click">
+					─
+				</Button>
+
+				<Button Grid.Column="2"
+				        Style="{StaticResource TitleBarButton}"
+                        Click="Close_Click">
+					✕
+				</Button>
+			</Grid>
+
+			<!-- MAIN CONTENT -->
+			<Border Grid.Column="1" Grid.Row="1"
+                    Background="#DD252525"
+                    CornerRadius="12"
+                    Padding="20">
+				<ContentControl x:Name="MainContent" />
+			</Border>
+
+		</Grid>
+	</Border>
 </Window>

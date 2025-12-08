@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using DevTools.Views;
+﻿using DevTools.Views;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace DevTools
 {
@@ -13,30 +14,6 @@ namespace DevTools
         public MainWindow()
         {
             InitializeComponent();
-            Menu.SelectedIndex = 0;
-        }
-
-        private void Menu_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (Menu.SelectedItem is not ListBoxItem item)
-                return;
-
-            switch (item.Tag)
-            {
-                case "Home":
-                    var homeView = App.Host.Services.GetRequiredService<HomeView>();
-                    MainContent.Content = homeView;
-                    break;
-                case "Timer":
-                    var timerView = App.Host.Services.GetRequiredService<TimerView>();
-                    MainContent.Content = timerView;
-                    break;
-                case "Water":
-                    var waterView = App.Host.Services.GetRequiredService<WaterView>();
-                    MainContent.Content = waterView;
-                    break;
-
-            }
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -49,6 +26,39 @@ namespace DevTools
             }
 
             base.OnClosing(e);
+        }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Min_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Menu_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+                Navigate(btn.Tag.ToString());
+        }
+
+        private void Navigate(string? tag)
+        {
+            MainContent.Content = tag switch
+            {
+                "Home" => App.Host.Services.GetRequiredService<HomeView>(),
+                "Timer" => App.Host.Services.GetRequiredService<TimerView>(),
+                "Water" => App.Host.Services.GetRequiredService<WaterView>(),
+                _ => App.Host.Services.GetRequiredService<HomeView>()
+            };
         }
     }
 }
