@@ -1,3 +1,2 @@
-1. Water timer/notification
-2. Code beautifier
-3. 
+1. Code beautifier
+3. Sql in fixer
