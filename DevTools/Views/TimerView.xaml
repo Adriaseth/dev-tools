@@ -4,33 +4,35 @@
              Background="Transparent">
 
 	<UserControl.Resources>
-		<!-- Small Action Button -->
+
+		<!-- Small action buttons -->
 		<Style x:Key="ActionButton" TargetType="Button">
-			<Setter Property="Background" Value="#44222222"/>
-			<Setter Property="Foreground" Value="White"/>
-			<Setter Property="FontSize" Value="20"/>
+			<Setter Property="Background" Value="#2A2E33"/>
+			<Setter Property="Foreground" Value="#EFFFFFFF"/>
+			<Setter Property="FontSize" Value="18"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="Height" Value="40"/>
-			<Setter Property="Width" Value="50"/>
+			<Setter Property="Height" Value="38"/>
+			<Setter Property="Width" Value="48"/>
 			<Setter Property="Margin" Value="2"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="5">
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<Border Background="{TemplateBinding Background}"
+                                CornerRadius="6">
+							<ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" Value="#77FFFFFF"/>
-								<Setter Property="Foreground" Value="Black"/>
+								<Setter Property="Background" Value="#3A4046"/>
 							</Trigger>
 							<Trigger Property="IsPressed" Value="True">
-								<Setter Property="Background" Value="#AAFFFFFF"/>
+								<Setter Property="Background" Value="#4A5057"/>
 							</Trigger>
 							<Trigger Property="IsEnabled" Value="False">
-								<Setter Property="Background" Value="#22333333"/>
-								<Setter Property="Foreground" Value="#888888"/>
+								<Setter Property="Background" Value="#1F2327"/>
+								<Setter Property="Foreground" Value="#777777"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -38,134 +40,138 @@
 			</Setter>
 		</Style>
 
-		<!-- Start/Stop Button Style -->
+		<!-- Primary start/stop button -->
 		<Style x:Key="StartStopButton" TargetType="Button">
-			<Setter Property="Height" Value="80"/>
-			<Setter Property="MinWidth" Value="300"/>
-			<Setter Property="MaxWidth" Value="500"/>
-			<Setter Property="FontSize" Value="24"/>
+			<Setter Property="Height" Value="72"/>
+			<Setter Property="MinWidth" Value="260"/>
+			<Setter Property="MaxWidth" Value="420"/>
+			<Setter Property="FontSize" Value="22"/>
 			<Setter Property="Foreground" Value="White"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="Background" Value="#DD222222"/>
-			<Setter Property="Padding" Value="10,10"/>
+			<Setter Property="Padding" Value="12"/>
 			<Setter Property="HorizontalAlignment" Value="Center"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}" CornerRadius="12" Padding="{TemplateBinding Padding}">
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<Border Background="{TemplateBinding Background}"
+                                CornerRadius="10">
+							<ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" Value="#77FFFFFF"/>
-								<Setter Property="Foreground" Value="Black"/>
+								<Setter Property="Opacity" Value="0.9"/>
 							</Trigger>
 							<Trigger Property="IsPressed" Value="True">
-								<Setter Property="Background" Value="#AAFFFFFF"/>
+								<Setter Property="Opacity" Value="0.8"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style>
+
 	</UserControl.Resources>
 
-	<Border Background="#DD252525"
-            CornerRadius="12"
-            Padding="30">
-		<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="20"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="10"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="10"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
+	<!-- CONTENT ONLY (no card background) -->
+	<Grid Margin="10">
 
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="150"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="120"/>
-			</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="24"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="12"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="24"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
-			<!-- TITLE -->
-			<TextBlock Text="Timer Instellingen"
-                       FontSize="32"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       Grid.ColumnSpan="4"
-                       Margin="0,0,0,20"/>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="160"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
 
-			<!-- STAAN -->
-			<TextBlock Text="Staan"
-			           Foreground="White"
-			           FontSize="20"
-			           VerticalAlignment="Center"
-			           Grid.Row="2" Grid.Column="0" />
+		<!-- TITLE -->
+		<TextBlock Text="Timer instellingen"
+                   FontSize="28"
+                   FontWeight="SemiBold"
+                   Foreground="#F0FFFFFF"
+                   Grid.ColumnSpan="2"
+                   Margin="0,0,0,12"/>
 
-			<StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
-			            Orientation="Horizontal" HorizontalAlignment="Left"
-			            VerticalAlignment="Center" Margin="10,0">
-				<Button Content="-" Style="{StaticResource ActionButton}" Click="btnStandSubtract_Click"
-				        IsEnabled="{Binding IsNotRunning}" />
-				<Button Content="+" Style="{StaticResource ActionButton}" Click="btnStandAdd_Click"
-				        Margin="5,0,10,0"
-				        IsEnabled="{Binding IsNotRunning}" />
-				<TextBlock Text="{Binding StandText}"
-				           Foreground="#4CAF50"
-				           FontSize="20"
-				           FontWeight="Bold"
-				           VerticalAlignment="Center"
-				           Margin="5,0,0,0" />
-			</StackPanel>
+		<!-- STAAN -->
+		<TextBlock Text="Staan"
+                   Foreground="#DDEFFFFF"
+                   FontSize="18"
+                   VerticalAlignment="Center"
+                   Grid.Row="2" Grid.Column="0"/>
 
-			<!-- ZITTEN -->
-			<TextBlock Text="Zitten"
-			           Foreground="White"
-			           FontSize="20"
-			           VerticalAlignment="Center"
-			           Grid.Row="4" Grid.Column="0" />
+		<StackPanel Grid.Row="2" Grid.Column="1"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+			<Button Content="−"
+                    Style="{StaticResource ActionButton}"
+                    Click="btnStandSubtract_Click"
+                    IsEnabled="{Binding IsNotRunning}"/>
+			<Button Content="+"
+                    Style="{StaticResource ActionButton}"
+                    Click="btnStandAdd_Click"
+                    Margin="6,0,12,0"
+                    IsEnabled="{Binding IsNotRunning}"/>
 
-			<StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-			            Orientation="Horizontal" HorizontalAlignment="Left"
-			            VerticalAlignment="Center" Margin="10,0">
-				<Button Content="-" Style="{StaticResource ActionButton}" Click="btnSitSubtract_Click"
-				        IsEnabled="{Binding IsNotRunning}" />
-				<Button Content="+" Style="{StaticResource ActionButton}" Click="btnSitAdd_Click"
-				        Margin="5,0,10,0"
-				        IsEnabled="{Binding IsNotRunning}" />
-				<TextBlock Text="{Binding SitText}"
-				           Foreground="#4CAF50"
-				           FontSize="20"
-				           FontWeight="Bold"
-				           VerticalAlignment="Center"
-				           Margin="5,0,0,0" />
-			</StackPanel>
-
-
-			<!-- REMAINING -->
-			<TextBlock Text="{Binding RemainingText}"
-                       Foreground="White"
-                       FontSize="24"
+			<TextBlock Text="{Binding StandText}"
+                       Foreground="#6FD18C"
+                       FontSize="18"
                        FontWeight="SemiBold"
-                       Grid.Row="6"
-                       Grid.ColumnSpan="4"
-                       HorizontalAlignment="Center"
-                       Margin="0,20"/>
+                       VerticalAlignment="Center"/>
+		</StackPanel>
 
-			<!-- START/STOP BUTTON -->
-			<Button Content="{Binding StartStopText}"
-                    Style="{StaticResource StartStopButton}"
-                    Grid.Row="8"
-                    Grid.ColumnSpan="4"
-                    Background="{Binding StartStopColor}"
-                    Click="btnStartStopTimer_Click"/>
-		</Grid>
-	</Border>
+		<!-- ZITTEN -->
+		<TextBlock Text="Zitten"
+                   Foreground="#DDEFFFFF"
+                   FontSize="18"
+                   VerticalAlignment="Center"
+                   Grid.Row="4" Grid.Column="0"/>
+
+		<StackPanel Grid.Row="4" Grid.Column="1"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+			<Button Content="−"
+                    Style="{StaticResource ActionButton}"
+                    Click="btnSitSubtract_Click"
+                    IsEnabled="{Binding IsNotRunning}"/>
+			<Button Content="+"
+                    Style="{StaticResource ActionButton}"
+                    Click="btnSitAdd_Click"
+                    Margin="6,0,12,0"
+                    IsEnabled="{Binding IsNotRunning}"/>
+
+			<TextBlock Text="{Binding SitText}"
+                       Foreground="#6FD18C"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+		</StackPanel>
+
+		<!-- REMAINING -->
+		<TextBlock Text="{Binding RemainingText}"
+                   Foreground="#F0FFFFFF"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Grid.Row="6"
+                   Grid.ColumnSpan="2"
+                   HorizontalAlignment="Center"
+                   Margin="0,16"/>
+
+		<!-- START / STOP -->
+		<Button Content="{Binding StartStopText}"
+                Style="{StaticResource StartStopButton}"
+                Grid.Row="8"
+                Grid.ColumnSpan="2"
+                Background="{Binding StartStopColor}"
+                Click="btnStartStopTimer_Click"/>
+	</Grid>
 </UserControl>

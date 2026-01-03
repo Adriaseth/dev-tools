@@ -7,32 +7,38 @@
         Height="720" Width="1280"
         WindowStartupLocation="CenterScreen">
 
+	<!-- Outer window shadow -->
 	<Window.Effect>
-		<DropShadowEffect BlurRadius="40" ShadowDepth="0" Color="Black" Opacity="0.5"/>
+		<DropShadowEffect BlurRadius="30"
+                          ShadowDepth="0"
+                          Color="Black"
+                          Opacity="0.45"/>
 	</Window.Effect>
 
 	<Window.Resources>
+
+		<!-- Title bar buttons -->
 		<Style x:Key="TitleBarButton" TargetType="Button">
-			<Setter Property="Background" Value="Transparent" />
-			<Setter Property="Foreground" Value="White" />
-			<Setter Property="FontSize" Value="18" />
-			<Setter Property="BorderThickness" Value="0" />
-			<Setter Property="Cursor" Value="Hand" />
-			<Setter Property="Width" Value="40" />
-			<Setter Property="Height" Value="40" />
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="#EFFFFFFF"/>
+			<Setter Property="FontSize" Value="18"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Width" Value="40"/>
+			<Setter Property="Height" Value="40"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}" CornerRadius="0">
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+						<Border Background="{TemplateBinding Background}">
+							<ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
 						</Border>
 						<ControlTemplate.Triggers>
-							<Trigger Property="IsMouseOver" Value="true">
-								<Setter Property="Background" Value="#55FFFFFF"/>
-								<Setter Property="Foreground" Value="#FFFFFF" />
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" Value="#22FFFFFF"/>
 							</Trigger>
 							<Trigger Property="IsPressed" Value="True">
-								<Setter Property="Background" Value="#77FFFFFF"/>
+								<Setter Property="Background" Value="#33FFFFFF"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -40,133 +46,149 @@
 			</Setter>
 		</Style>
 
+		<!-- Sidebar buttons -->
 		<Style x:Key="SidebarItem" TargetType="Button">
-			<Setter Property="Background" Value="Transparent" />
-			<Setter Property="Foreground" Value="#EEEEEE" />
-			<Setter Property="FontSize" Value="18" />
-			<Setter Property="BorderThickness" Value="0" />
-			<Setter Property="Cursor" Value="Hand" />
-			<Setter Property="HorizontalAlignment" Value="Stretch" />
-			<Setter Property="Height" Value="50"/>
-			<Setter Property="Padding" Value="0" />
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="#DDFFFFFF"/>
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+			<Setter Property="Height" Value="46"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}" CornerRadius="0">
-							<ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0" />
+						<Border Background="{TemplateBinding Background}">
+							<ContentPresenter Margin="20,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
 						</Border>
 						<ControlTemplate.Triggers>
-							<Trigger Property="IsMouseOver" Value="true">
-								<Setter Property="Background" Value="#55FFFFFF" />
-								<Setter Property="Foreground" Value="#FFFFFF" />
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" Value="#1FFFFFFF"/>
 							</Trigger>
-							<Trigger Property="IsPressed" Value="true">
-								<Setter Property="Background" Value="#77FFFFFF" />
+							<Trigger Property="IsPressed" Value="True">
+								<Setter Property="Background" Value="#2FFFFFFF"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style>
+
 	</Window.Resources>
 
-	<Border CornerRadius="12" Background="#AA1A1A1A">
+	<!-- Root surface -->
+	<Border CornerRadius="12"
+            Background="#2C2F33"
+            BorderBrush="#33FFFFFF"
+            BorderThickness="1">
+
 		<Grid>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="50"/>
-				<!-- Header -->
+				<RowDefinition Height="48"/>
 				<RowDefinition Height="*"/>
-				<!-- Main area -->
 			</Grid.RowDefinitions>
 
-			<!-- Full background gradient and blur -->
+			<!-- BACKGROUND ATMOSPHERE (blur only here) -->
 			<Border Grid.RowSpan="2">
 				<Border.Background>
 					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-						<GradientStop Color="#2244AA33" Offset="0" />
-						<GradientStop Color="#00224411" Offset="1" />
+						<GradientStop Color="#334A7A6A" Offset="0"/>
+						<GradientStop Color="#00203028" Offset="1"/>
 					</LinearGradientBrush>
 				</Border.Background>
 				<Border.Effect>
-					<BlurEffect Radius="18"/>
+					<BlurEffect Radius="14"/>
 				</Border.Effect>
 			</Border>
 
 			<!-- HEADER -->
-			<Grid Grid.Row="0" Background="Transparent" MouseDown="DragWindow">
+			<Grid Grid.Row="0"
+                  Background="#2A2D31"
+                  MouseDown="DragWindow">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="40" />
-					<ColumnDefinition Width="40" />
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="40"/>
+					<ColumnDefinition Width="40"/>
 				</Grid.ColumnDefinitions>
+
+				<!-- Header divider -->
+				<Border BorderBrush="#33FFFFFF"
+                        BorderThickness="0,0,0,1"
+                        Grid.ColumnSpan="3"/>
+
+				<TextBlock Text="DevTools"
+                           VerticalAlignment="Center"
+                           Margin="16,0,0,0"
+                           Foreground="#F0FFFFFF"
+                           FontSize="14"
+                           FontWeight="SemiBold"/>
 
 				<Button Grid.Column="1"
                         Style="{StaticResource TitleBarButton}"
-                        Click="Min_Click">
-					─
-				</Button>
+                        Click="Min_Click">─</Button>
 
 				<Button Grid.Column="2"
                         Style="{StaticResource TitleBarButton}"
-                        Click="Close_Click">
-					✕
-				</Button>
+                        Click="Close_Click">✕</Button>
 			</Grid>
 
 			<!-- MAIN AREA -->
 			<Grid Grid.Row="1">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="260"/>
-					<!-- Sidebar -->
+					<ColumnDefinition Width="240"/>
 					<ColumnDefinition Width="*"/>
-					<!-- Main content -->
 				</Grid.ColumnDefinitions>
 
 				<!-- SIDEBAR -->
-				<Border Grid.Column="0" Background="Transparent" CornerRadius="0" Padding="0">
+				<Border Grid.Column="0"
+                        Background="#262A2E"
+                        BorderBrush="#33FFFFFF"
+                        BorderThickness="0,0,1,0">
 					<StackPanel>
-						<TextBlock Text="DevTools"
-                                   FontSize="26"
-                                   Foreground="White"
-                                   FontWeight="Bold"
-                                   Margin="20,20,20,30"/>
 
 						<TextBlock Text="MENU"
                                    Foreground="#77FFFFFF"
-                                   Margin="20,0,20,12"/>
+                                   Margin="20,24,20,12"/>
 
-						<StackPanel>
-							<Button Style="{StaticResource SidebarItem}" Tag="Home" Click="Menu_Click">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="🏠" FontSize="18" Margin="0 0 10 0" />
-									<TextBlock Text="Home" />
-								</StackPanel>
-							</Button>
+						<Button Style="{StaticResource SidebarItem}" Tag="Home" Click="Menu_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="🏠" Margin="0,0,10,0"/>
+								<TextBlock Text="Home"/>
+							</StackPanel>
+						</Button>
 
-							<Button Style="{StaticResource SidebarItem}" Tag="Timer" Click="Menu_Click">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="⏱" FontSize="18" Margin="0 0 10 0" />
-									<TextBlock Text="Timer" />
-								</StackPanel>
-							</Button>
+						<Button Style="{StaticResource SidebarItem}" Tag="Timer" Click="Menu_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="⏱" Margin="0,0,10,0"/>
+								<TextBlock Text="Timer"/>
+							</StackPanel>
+						</Button>
 
-							<Button Style="{StaticResource SidebarItem}" Tag="Water" Click="Menu_Click">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="💧" FontSize="18" Margin="0 0 10 0" />
-									<TextBlock Text="Water" />
-								</StackPanel>
-							</Button>
-						</StackPanel>
+						<Button Style="{StaticResource SidebarItem}" Tag="Water" Click="Menu_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="💧" Margin="0,0,10,0"/>
+								<TextBlock Text="Water"/>
+							</StackPanel>
+						</Button>
+
 					</StackPanel>
 				</Border>
 
-				<!-- MAIN CONTENT -->
+				<!-- CONTENT -->
 				<Border Grid.Column="1"
-                        Background="#DD252525"
-                        CornerRadius="12"
-                        Padding="20">
-					<ContentControl x:Name="MainContent" />
+                        Background="#31363B"
+                        CornerRadius="8"
+                        Margin="16"
+                        Padding="20"
+                        BorderBrush="#33FFFFFF"
+                        BorderThickness="1">
+
+					<ContentControl x:Name="MainContent"/>
+
 				</Border>
+
 			</Grid>
 		</Grid>
 	</Border>

@@ -1,2 +1,10 @@
-1. Code beautifier
-3. Sql in fixer
+1. Notities kunnen maken
+	- Dag/Tijd
+	- Markdown
+2. Mail uitlezen
+	- Broken views
+3. Sta/Zit timer
+	- Input aan kunnen geven
+	- Timer kunnen resetten
+	- Wisselen van "actieve" modus
+2. Sql in fixer
